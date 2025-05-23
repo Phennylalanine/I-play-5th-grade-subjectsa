@@ -37,7 +37,7 @@ function getRandomQuestion() {
 
 function speak(text) {
   const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = "en-US";
+  utterance.lang = "en-UK";
   speechSynthesis.speak(utterance);
 }
 
