@@ -98,5 +98,12 @@ answerInput.addEventListener("keydown", function(e) {
 nextBtn.addEventListener("click", showQuestion);
 
 // Optional: Manual speak button
+const speakBtn = document.getElementById("speakBtn");
+if (speakBtn) {
+  speakBtn.addEventListener("click", function() {
+    if (currentQuestion && currentQuestion.en) {
+      speak(currentQuestion.en);
+    }
+
   });
 }
