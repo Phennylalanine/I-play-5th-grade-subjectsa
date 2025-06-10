@@ -4,16 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Typing Challenge</title>
-
-  <!-- Custom Font -->
   <style>
-    @font-face {
-      font-family: 'Handfish';
-      src: url('fonts/Handfish.ttf') format('truetype'); /* Corrected file extension case */
-      font-weight: normal;
-      font-style: normal;
-    }
-
     body {
       font-family: Arial, sans-serif;
       text-align: center;
@@ -22,7 +13,6 @@
     }
 
     #question {
-      font-family: 'Handfish', Arial, sans-serif; /* Correct order and syntax */
       font-size: 2em;
       margin-bottom: 20px;
     }
@@ -59,6 +49,20 @@
       font-weight: bold;
     }
 
+    #xp {
+      position: absolute;
+      top: 130px;
+      right: 20px;
+      font-weight: bold;
+    }
+
+    #level {
+      position: absolute;
+      top: 160px;
+      right: 20px;
+      font-weight: bold;
+    }
+
     /* Start screen styles */
     #startScreen {
       position: fixed;
@@ -89,7 +93,7 @@
   <!-- Start screen -->
   <div id="startScreen">
     <div id="startMessage">
-      <h2>正しい小文字を入力してください。！</h2>
+      <h2>英語クイズへようこそ！</h2>
       <p>始めるにはクリックしてください。</p>
       <button id="startBtn">Click to Start</button>
     </div>
@@ -97,11 +101,13 @@
 
   <!-- Quiz content -->
   <div id="score">Score: 0</div>
-  <span id="streak">コンボ: 0</span>
+  <div id="streak">コンボ: 0</div> <!-- ✅ ADDED -->
   <div id="question">Loading...</div>
   <input type="text" id="answerInput" placeholder="Type the English here" autocomplete="off"/>
   <div id="feedback"></div>
-  <button id="nextBtn" style="display: none;">Next</button>
+   <button id="nextBtn">Next</button>
+  <div id="xp">XP: 0</div>
+  <div id="level">Lv: 1</div>
 
   <!-- PapaParse for CSV loading -->
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
