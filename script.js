@@ -2,6 +2,8 @@ let questions = [];
 let currentQuestion = null;
 let score = 0;
 let streak = 0;
+let xp = 0;
+let level = 1;
 let userInteracted = false;
 
 // Start screen elements
@@ -14,7 +16,9 @@ const answerInput = document.getElementById("answerInput");
 const feedback = document.getElementById("feedback");
 const nextBtn = document.getElementById("nextBtn");
 const scoreDisplay = document.getElementById("score");
-const streakDisplay = document.getElementById("streak"); // ✅ Fixed ID here
+const streakDisplay = document.getElementById("streak");
+const xpDisplay = document.getElementById("xp");
+const levelDisplay = document.getElementById("level");
 
 // Start the game on button click
 startBtn.addEventListener("click", () => {
@@ -58,15 +62,53 @@ function showQuestion() {
 
 function updateScoreAndStreakDisplay() {
   scoreDisplay.textContent = "Score: " + score;
-  streakDisplay.textContent = "コンボ: " + streak; // ✅ Fixed label to コンボ
+  streakDisplay.textContent = "コンボ: " + streak;
 }
+
+function updateXPDisplay() {
+  if (xpDisplay) xpDisplay.textContent = "XP: " + xp;
+  if (levelDisplay) levelDisplay.textContent = "Lv: " + level;
+}
+
+function saveProgress() {
+  localStorage.setItem("subjects_xp", xp);
+  localStorage.setItem("subjects_level", level);
+}
+
+function loadProgress() {
+ const savedXP = localStorage.getItem("subjects_xp");
+const savedLevel = localStorage.getItem("subjects_level");
+  if (savedXP !== null) xp = parseInt(savedXP, 10);
+  if (savedLevel !== null) level = parseInt(savedLevel, 10);
+  updateScoreAndStreakDisplay();
+  updateXPDisplay();
+}
+
+
+function checkLevelUp() {
+  const baseXP = 1;
+  const xpNeeded = (level ** 2) * baseXP;
+
+  if (xp >= xpNeeded) {
+    level++;
+    xp -= xpNeeded;
+    feedback.innerHTML += `<br/>🎉 レベルアップ！Now Level ${level}`;
+    saveProgress(); // Ensure progress is saved after level up
+    updateXPDisplay();
+  }
+}
+
 
 function showFeedback(correct, expected, userInput) {
   if (correct) {
     feedback.innerHTML = "✅ 正解！Good job!";
     score++;
     streak++;
+    xp += 1;
+    checkLevelUp();
+    saveProgress();
     updateScoreAndStreakDisplay();
+    updateXPDisplay();
   } else {
     let mismatchIndex = [...expected].findIndex((char, i) => char !== userInput[i]);
     if (mismatchIndex === -1 && userInput.length > expected.length) {
@@ -87,7 +129,7 @@ function showFeedback(correct, expected, userInput) {
   }
 
   answerInput.disabled = true;
-  nextBtn.style.display = "inline-block"; // ✅ Ensure next button shows
+  nextBtn.style.display = "inline-block";
 }
 
 answerInput.addEventListener("keydown", function(e) {
@@ -115,6 +157,5 @@ if (speakBtn) {
   });
 }
 
-// Initialize displays
-if (scoreDisplay) scoreDisplay.textContent = "Score: 0";
-if (streakDisplay) streakDisplay.textContent = "コンボ: 0"; // ✅ Initialize with コンボ
+// Initialize
+loadProgress();
